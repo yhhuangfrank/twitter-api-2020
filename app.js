@@ -11,7 +11,11 @@ const routes = require("./routes/index");
 const app = express();
 // Pass Server to socket.io instead of expresss application function.
 const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
 const port = process.env.PORT || 3000;
 
 // use helpers.getUser(req) to replace req.user
