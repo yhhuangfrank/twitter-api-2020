@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const userController = require("../controllers/user-controller");
 const tweetController = require("../controllers/tweet-controller");
+const messageController = require("../controllers/message-controller")
 const admin = require("./module/admin");
 const { errorHandler } = require("../middleware/error-handler");
 const { authenticatedUser } = require("../middleware/auth");
@@ -96,6 +97,9 @@ router.delete(
   userController.removeFollowing
 );
 router.post("/api/followships", authenticatedUser, userController.addFollowing);
+
+// - Message
+router.get("/api/messages", authenticatedUser, messageController.getPublicMessages)
 
 // - Error
 router.use("/", errorHandler);

@@ -16,7 +16,7 @@ const adminController = {
 
       const isMatch = await bcrypt.compare(password, foundUser.password);
 
-      if (!isMatch) throw newError(400, "密碼不正確!")
+      if (!isMatch) throw newError(400, "帳號或密碼不正確!")
 
       const loginUser = foundUser.toJSON();
       delete loginUser.password;
