@@ -4,11 +4,20 @@ const messageController = {
   getPublicMessages: async (req, res, next) => {
     try {
       const messages = await Public_Message.findAll({
-        include: [{ model: User, attributes: ["avatar"], required: true }],
+        include: [{ model: User, attributes: ["avatar"],  }],
         raw: true,
         nest: true,
       });
-      return res.json(messages);
+      const data = messages.map((m) => ({
+        type: "message",
+        author: {
+          id: m.UserId,
+          avatar: m.User.avatar,
+        },
+        message: m.message,
+        time: m.time,
+      }));
+      return res.json(data);
     } catch (error) {
       return next(error);
     }

@@ -1,4 +1,4 @@
-let currentUsers = {}; // - 儲存目前登入使用者
+const currentUsers = {}; // - 儲存目前登入使用者
 const { Public_Message } = require("../models");
 const { getCurrentUserList } = require("../helpers/data-helper");
 module.exports = (io) => {
@@ -22,15 +22,15 @@ module.exports = (io) => {
     });
 
     // - user 加入聊天室
-    socket.on("join_chat", (user) => {
+    socket.on("join_chat", (data) => {
       console.log("有人加入了");
+      const { user, time } = data;
       if (!user || !user.id || currentUsers[user.id]) return;
 
       // - 儲存至 currentUsers
-      const newCurrentUsers = { ...currentUsers };
-      newCurrentUsers[user.id] = user // - 加入新成員
-      currentUsers = { ...newCurrentUsers };
-      
+      user.time = time;
+      currentUsers[user.id] = user; // - 加入新成員
+
       const currentUsersList = getCurrentUserList(currentUsers);
       console.log(currentUsersList);
       console.log(`目前有${currentUsersList.length}位在聊天室`);
@@ -46,7 +46,7 @@ module.exports = (io) => {
 
       delete currentUsers[user.id];
       const currentUsersList = getCurrentUserList(currentUsers);
-
+      console.log(currentUsersList);
       console.log(`目前有${currentUsersList.length}位在聊天室`);
     });
 
